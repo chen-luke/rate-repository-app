@@ -1,4 +1,5 @@
 import { FlatList, View, StyleSheet } from 'react-native';
+import theme from '../theme';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({

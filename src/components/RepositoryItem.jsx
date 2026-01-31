@@ -1,16 +1,67 @@
-import { Text } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import Text from './Text';
+import theme from '../theme';
+import StatsItem from './StatsItem';
+
+const styles = StyleSheet.create({
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 20,
+    padding: 20,
+    backgroundColor: 'white',
+  },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 20,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    gap: 5,
+    justifyContent: 'space-around',
+  },
+  languageIcon: {
+    backgroundColor: theme.colors.primary,
+    alignSelf: 'flex-start',
+    padding: 5,
+    borderRadius: 5,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
+  },
+  infoWrapper: {
+    flexDirection: 'column',
+    flex: 1,
+    gap: 5,
+  },
+});
 
 const RepositoryItem = ({ item }) => {
   return (
-    <>
-      <Text>Full name: {item.fullName}</Text>
-      <Text>Description: {item.description}</Text>
-      <Text>Language: {item.language}</Text>
-      <Text>Stars: {item.stargazersCount}</Text>
-      <Text>Forks: {item.forksCount}</Text>
-      <Text>Reviews: {item.reviewCount}</Text>
-      <Text>Rating: {item.ratingAverage}</Text>
-    </>
+    <View style={styles.card}>
+      <View style={styles.headerContainer}>
+        <Image style={styles.avatar} source={{ uri: item.ownerAvatarUrl }} />
+
+        <View style={styles.infoWrapper}>
+          <Text fontWeight={'bold'}>{item.fullName}</Text>
+          <Text>{item.description}</Text>
+
+          <View style={styles.languageIcon}>
+            <Text color={'white'}>{item.language}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.statsContainer}>
+        <StatsItem text={'Stars'} stat={item.stargazersCount} />
+        <StatsItem text={'Forks'} stat={item.forksCount} />
+        <StatsItem text={'Reviews'} stat={item.reviewCount} />
+        <StatsItem text={'Rating'} stat={item.ratingAverage} />
+      </View>
+    </View>
   );
 };
 
