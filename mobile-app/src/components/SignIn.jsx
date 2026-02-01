@@ -92,7 +92,7 @@ const SignIn = () => {
         ]}
         onPress={formik.handleSubmit}
       >
-        <Text style={styles.buttonText}>Sign in</Text>
+        <Text style={styles.buttonText}>Sign</Text>
       </Pressable>
     </View>
   );
