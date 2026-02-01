@@ -7,6 +7,7 @@ const theme = {
     black: '#000',
     appBarBg: '#24292e',
     grayBg: '#e1e4e8',
+    warn: '#d73a4a',
   },
   fontSizes: {
     body: 14,
