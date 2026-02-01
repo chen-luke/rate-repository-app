@@ -11,7 +11,7 @@ const useRepositories = () => {
     // eslint-disable-next-line no-undef
     const response = await fetch('http://192.168.1.211:5000/api/repositories');
     const json = await response.json();
-
+    console.log(json);
     setLoading(false);
     setRepositories(json);
   };
