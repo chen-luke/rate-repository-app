@@ -77,7 +77,6 @@ const RepositoryList = () => {
       </View>
     );
   }
-
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
