@@ -4,6 +4,7 @@ import theme from '../theme';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,13 +51,17 @@ const validationSchema = yup.object().shape({
 
 const SignIn = () => {
   const [signIn, result] = useSignIn();
+  const navigate = useNavigate();
 
   const handleLogin = async (values) => {
     console.log('Logged in with:', values.username, values.password);
     const { username, password } = values;
     // This is  where you'd call your API
     try {
-      const token = await signIn({ username, password });
+      const data = await signIn({ username, password });
+      if (data) {
+        navigate('/');
+      }
     } catch (error) {
       console.log(error);
     }

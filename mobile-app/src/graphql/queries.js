@@ -24,7 +24,6 @@ export const AUTHENTICATE_USER = gql`
   mutation AuthenticateUser($username: String!, $password: String!) {
     authenticate(credentials: { username: $username, password: $password }) {
       accessToken
-      # You might also want user details here
       user {
         id
         username
@@ -33,4 +32,11 @@ export const AUTHENTICATE_USER = gql`
   }
 `;
 
-// other queries...
+export const GET_ME = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;
