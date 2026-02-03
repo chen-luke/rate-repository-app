@@ -3,6 +3,8 @@ import Text from './Text';
 import theme from '../theme';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -48,9 +50,21 @@ const validationSchema = yup.object().shape({
 });
 
 const SignIn = () => {
-  const handleLogin = (values) => {
+  const [signIn, result] = useSignIn();
+  const navigate = useNavigate();
+
+  const handleLogin = async (values) => {
     console.log('Logged in with:', values.username, values.password);
-    // This is where you'd call your API
+    const { username, password } = values;
+    // This is  where you'd call your API
+    try {
+      const data = await signIn({ username, password });
+      if (data) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const formik = useFormik({
     initialValues,
@@ -91,8 +105,11 @@ const SignIn = () => {
           { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
         ]}
         onPress={formik.handleSubmit}
+        disabled={result.loading}
       >
-        <Text style={styles.buttonText}>Sign In</Text>
+        <Text style={styles.buttonText}>
+          {result.loading ? 'Signing In' : 'Sign In'}
+        </Text>
       </Pressable>
     </View>
   );
