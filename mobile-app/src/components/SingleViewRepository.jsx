@@ -19,7 +19,7 @@ const SingleViewRepository = () => {
 
   return (
     <View>
-      <RepositoryItem item={data.repository} />
+      <RepositoryItem item={data.repository} showButton={true} />
     </View>
   );
 };

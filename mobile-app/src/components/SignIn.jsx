@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
 import { useNavigate } from 'react-router-native';
+import Button from './Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,17 +20,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.textSecondary,
     borderRadius: 5,
     padding: 10,
-  },
-  submitButton: {
-    height: 50,
-    backgroundColor: theme.colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
 });
 
@@ -82,16 +72,7 @@ export const SignInContainer = ({ onSubmit }) => {
         </Text>
       )}
 
-      {/* Custom Button using Pressable */}
-      <Pressable
-        style={({ pressed }) => [
-          styles.submitButton,
-          { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
-        ]}
-        onPress={formik.handleSubmit}
-      >
-        <Text style={styles.buttonText}>Sign In</Text>
-      </Pressable>
+      <Button text={'Sign In'} onHandlePress={formik.handleSubmit} />
     </View>
   );
 };

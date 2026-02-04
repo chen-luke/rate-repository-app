@@ -2,6 +2,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import StatsItem from './StatsItem';
+import Button from './Button';
 
 const styles = StyleSheet.create({
   card: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showButton = false }) => {
   return (
     <View style={styles.card} testID='repositoryItem'>
       <View style={styles.headerContainer}>
@@ -61,6 +62,21 @@ const RepositoryItem = ({ item }) => {
         <StatsItem text={'Reviews'} stat={item.reviewCount} />
         <StatsItem text={'Rating'} stat={item.ratingAverage} />
       </View>
+      {showButton && (
+        <Button
+          text={'Open in GitHub'}
+          onHandlePress={() => console.log('Pressed!')}
+        />
+      )}
+      {/* <Pressable
+        style={({ pressed }) => [
+          styles.submitButton,
+          { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
+        ]}
+        onPress={formik.handleSubmit}
+      >
+        <Text style={styles.buttonText}>Sign In</Text>
+      </Pressable> */}
     </View>
   );
 };
