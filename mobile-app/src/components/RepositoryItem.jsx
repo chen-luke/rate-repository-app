@@ -3,6 +3,7 @@ import Text from './Text';
 import theme from '../theme';
 import StatsItem from './StatsItem';
 import Button from './Button';
+import { openURL } from 'expo-linking';
 
 const styles = StyleSheet.create({
   card: {
@@ -65,7 +66,10 @@ const RepositoryItem = ({ item, showButton = false }) => {
       {showButton && (
         <Button
           text={'Open in GitHub'}
-          onHandlePress={() => console.log('Pressed!')}
+          onHandlePress={() => {
+            console.log(item.url);
+            openURL(item.url);
+          }}
         />
       )}
       {/* <Pressable

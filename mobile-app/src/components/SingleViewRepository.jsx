@@ -1,6 +1,5 @@
 import RepositoryItem from './RepositoryItem';
 import { View } from 'react-native';
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-native';
 import Text from './Text';
 import { useQuery } from '@apollo/client';
