@@ -67,20 +67,10 @@ const RepositoryItem = ({ item, showButton = false }) => {
         <Button
           text={'Open in GitHub'}
           onHandlePress={() => {
-            console.log(item.url);
             openURL(item.url);
           }}
         />
       )}
-      {/* <Pressable
-        style={({ pressed }) => [
-          styles.submitButton,
-          { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
-        ]}
-        onPress={formik.handleSubmit}
-      >
-        <Text style={styles.buttonText}>Sign In</Text>
-      </Pressable> */}
     </View>
   );
 };
