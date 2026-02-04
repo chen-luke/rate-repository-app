@@ -2,6 +2,8 @@ import { Image, StyleSheet, View } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import StatsItem from './StatsItem';
+import Button from './Button';
+import { openURL } from 'expo-linking';
 
 const styles = StyleSheet.create({
   card: {
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showButton = false }) => {
   return (
     <View style={styles.card} testID='repositoryItem'>
       <View style={styles.headerContainer}>
@@ -61,6 +63,14 @@ const RepositoryItem = ({ item }) => {
         <StatsItem text={'Reviews'} stat={item.reviewCount} />
         <StatsItem text={'Rating'} stat={item.ratingAverage} />
       </View>
+      {showButton && (
+        <Button
+          text={'Open in GitHub'}
+          onHandlePress={() => {
+            openURL(item.url);
+          }}
+        />
+      )}
     </View>
   );
 };
