@@ -8,6 +8,7 @@ import { GET_ME } from '../graphql/queries';
 import { useApolloClient } from '@apollo/client';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useNavigate } from 'react-router-native';
+import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +44,10 @@ const AppBar = () => {
         {data?.me ? (
           <AppBarTab name={'Sign Out'} onPress={onSignOut} />
         ) : (
-          <AppBarTab name={'Sign In'} link={'/signin'} />
+          <>
+            <AppBarTab name={'Sign In'} link={'/signin'} />
+            <AppBarTab name={'Sign Up'} link={'/signup'} />
+          </>
         )}
       </ScrollView>
     </View>

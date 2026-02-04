@@ -44,8 +44,8 @@ const validationSchema = yup.object().shape({
   ownerName: yup
     .string()
     .trim()
-    .min(1, 'OwnerName must be greater or equal to 1 character')
-    .required('Owner name is required'),
+    .min(1, 'Repository owner name must be greater or equal to 1 character')
+    .required('Repository owner name is required'),
   repositoryName: yup.string().trim().required('Repository name is required'),
   rating: yup
     .number()
