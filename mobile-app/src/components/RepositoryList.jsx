@@ -1,10 +1,11 @@
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, TextInput } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import Text from './Text';
 import { useNavigate } from 'react-router-native';
 import SortMenu from './SortMenu';
 import { useState } from 'react';
+import SearchBar from './SearchBar';
 
 const styles = StyleSheet.create({
   separator: {
@@ -18,6 +19,8 @@ export const RepositoryListContainer = ({
   repositories,
   sortingMethod,
   setSortingMethod,
+  searchValue,
+  setSearchValue,
 }) => {
   const navigate = useNavigate();
 
@@ -30,11 +33,17 @@ export const RepositoryListContainer = ({
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={
-          <SortMenu
-            key='stable-sort-menu'
-            sortingMethod={sortingMethod}
-            setSortingMethod={setSortingMethod}
-          />
+          <View>
+            <SearchBar
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
+            <SortMenu
+              key='stable-sort-menu'
+              sortingMethod={sortingMethod}
+              setSortingMethod={setSortingMethod}
+            />
+          </View>
         }
         renderItem={({ item }) => (
           <Pressable
@@ -54,6 +63,8 @@ export const RepositoryListContainer = ({
 const RepositoryList = () => {
   // 1. Lift state here
   const [sortingMethod, setSortingMethod] = useState('latest');
+  const [searchValue, setSearchValue] = useState('');
+  console.log('what is search value?', searchValue);
 
   // 2. Define the mapping logic
   const sortOptions = {
@@ -87,6 +98,8 @@ const RepositoryList = () => {
       repositories={repositories}
       sortingMethod={sortingMethod}
       setSortingMethod={setSortingMethod}
+      setSearchValue={setSearchValue}
+      searchValue={searchValue}
     />
   );
 };

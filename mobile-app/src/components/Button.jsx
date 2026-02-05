@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ text, onHandlePress }) => {
+const Button = ({ text, onHandlePress, widthVal }) => {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.submitButton,
         { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
+        { width: widthVal },
       ]}
       onPress={onHandlePress}
     >
