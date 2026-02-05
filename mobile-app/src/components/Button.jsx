@@ -14,19 +14,24 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  warn: {
+    backgroundColor: theme.colors.warn,
+  },
 });
 
-const Button = ({ text, onHandlePress, widthVal }) => {
+const Button = ({ text, onHandlePress, style, warn = false, flex = false }) => {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.submitButton,
         { opacity: pressed ? 0.7 : 1 }, // Visual feedback when tapped
-        { width: widthVal },
+        warn && styles.warn,
+        style,
+        flex && { flex: 1 },
       ]}
       onPress={onHandlePress}
     >
-      <Text style={styles.buttonText}>{text}</Text>
+      <Text style={[styles.buttonText]}>{text}</Text>
     </Pressable>
   );
 };

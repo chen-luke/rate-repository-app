@@ -18,10 +18,7 @@ const MyReviews = () => {
       <FlatList
         data={reviews}
         ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => {
-          console.log(item);
-          return <Review review={item} />;
-        }}
+        renderItem={({ item }) => <Review review={item} showButtons={true} />}
         keyExtractor={(item) => item.id}
       />
     </View>

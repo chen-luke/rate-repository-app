@@ -30,7 +30,13 @@ const SearchBar = ({ searchValue, setSearchValue }) => {
       ></TextInput>
       <Button
         text={'X'}
-        widthVal={50}
+        style={{
+          width: 50,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+        }}
         onHandlePress={() => setSearchValue('')}
       />
     </View>
