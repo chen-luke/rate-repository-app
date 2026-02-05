@@ -4,8 +4,9 @@ import useRepositories from '../hooks/useRepositories';
 import Text from './Text';
 import { useNavigate } from 'react-router-native';
 import SortMenu from './SortMenu';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SearchBar from './SearchBar';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,55 +16,58 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({
-  repositories,
-  sortingMethod,
-  setSortingMethod,
-  searchValue,
-  setSearchValue,
-}) => {
-  const navigate = useNavigate();
+export class RepositoryListContainer extends React.Component {
+  renderHeader = () => {
+    const { searchValue, setSearchValue, sortingMethod, setSortingMethod } =
+      this.props;
 
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
-  return (
-    <>
-      <FlatList
-        data={repositoryNodes}
-        ItemSeparatorComponent={ItemSeparator}
-        ListHeaderComponent={
-          <View>
-            <SearchBar
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-            />
-            <SortMenu
-              key='stable-sort-menu'
-              sortingMethod={sortingMethod}
-              setSortingMethod={setSortingMethod}
-            />
-          </View>
-        }
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              navigate(`/repositories/${item.id}`);
-            }}
-          >
-            <RepositoryItem item={item}></RepositoryItem>
-          </Pressable>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-    </>
-  );
-};
+    return (
+      <View>
+        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+        <SortMenu
+          sortingMethod={sortingMethod}
+          setSortingMethod={setSortingMethod}
+        />
+      </View>
+    );
+  };
+
+  render() {
+    const { repositories, navigate } = this.props;
+
+    const repositoryNodes = repositories
+      ? repositories.edges.map((edge) => edge.node)
+      : [];
+
+    return (
+      <>
+        <FlatList
+          data={repositoryNodes}
+          ItemSeparatorComponent={ItemSeparator}
+          ListHeaderComponent={this.renderHeader}
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={() => {
+                navigate(`/repositories/${item.id}`);
+              }}
+            >
+              <RepositoryItem item={item}></RepositoryItem>
+            </Pressable>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </>
+    );
+  }
+}
 
 const RepositoryList = () => {
   // 1. Lift state here
   const [sortingMethod, setSortingMethod] = useState('latest');
   const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
+  const [debouncedSearchValue] = useDebounce(searchValue, 500);
+
   console.log('what is search value?', searchValue);
 
   // 2. Define the mapping logic
@@ -74,16 +78,11 @@ const RepositoryList = () => {
   };
 
   // 3. Pass variables to the hook
-  const { repositories, loading, error } = useRepositories(
-    sortOptions[sortingMethod],
-  );
+  const { repositories, loading, error } = useRepositories({
+    ...sortOptions[sortingMethod],
+    searchKeyword: debouncedSearchValue,
+  });
 
-  if (loading)
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
   if (error) {
     console.log('Apollo Error:', error);
     return (
@@ -100,6 +99,7 @@ const RepositoryList = () => {
       setSortingMethod={setSortingMethod}
       setSearchValue={setSearchValue}
       searchValue={searchValue}
+      navigate={navigate}
     />
   );
 };
