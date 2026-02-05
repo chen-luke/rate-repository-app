@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBarBg,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'col',
   },
 });
 

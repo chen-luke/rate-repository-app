@@ -1,8 +1,11 @@
 import { gql } from '@apollo/client';
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query Repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       edges {
         node {
           fullName
@@ -14,12 +17,12 @@ export const GET_REPOSITORIES = gql`
           forksCount
           description
           ownerAvatarUrl
+          createdAt # Added this just in case
         }
       }
     }
   }
 `;
-
 export const AUTHENTICATE_USER = gql`
   mutation AuthenticateUser($username: String!, $password: String!) {
     authenticate(credentials: { username: $username, password: $password }) {
