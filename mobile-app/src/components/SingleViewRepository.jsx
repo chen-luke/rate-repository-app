@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const Review = ({ review }) => {
+export const Review = ({ review }) => {
   const date = new Date(review.createdAt).toLocaleDateString();
   return (
     <View style={styles.reviewContainer}>
@@ -47,9 +47,14 @@ const Review = ({ review }) => {
         </Text>
       </View>
       <View style={styles.reviewInfo}>
-        <Text fontSize={'subheading'} fontWeight={'bold'}>
-          {review.user.username}
-        </Text>
+        {review.user?.username && (
+          <Text fontSize={'subheading'} fontWeight={'bold'}>
+            {review.user.username}
+          </Text>
+        )}
+        {review.repository?.fullName && (
+          <Text fontWeight={'bold'}>{review.repository.fullName}</Text>
+        )}
         <Text>{date}</Text>
         <Text>{review.text}</Text>
       </View>
