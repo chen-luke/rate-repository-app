@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import Text from './Text';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import theme from '../theme';
 import Button from './Button';
 import { useNavigate } from 'react-router-native';
@@ -48,6 +48,22 @@ const Review = ({
 
   const date = new Date(review.createdAt).toLocaleDateString();
 
+  const onHandleDeleteReview = () => {};
+
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      'Delete review',
+      'Are you sure you want to delete this review?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'DELETE', onPress: onHandleDeleteReview },
+      ],
+    );
+
   return (
     <View>
       <View style={styles.reviewContainer}>
@@ -82,7 +98,7 @@ const Review = ({
             text={'Delete review'}
             warn={true}
             flex={1}
-            onHandlePress={onDeleteReview}
+            onHandlePress={createTwoButtonAlert}
           ></Button>
         </View>
       )}
