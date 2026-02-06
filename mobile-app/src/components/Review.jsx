@@ -1,6 +1,9 @@
 import { View } from 'react-native';
 import Text from './Text';
 import { StyleSheet } from 'react-native';
+import theme from '../theme';
+import Button from './Button';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
   reviewContainer: {
@@ -35,8 +38,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const Review = ({ review, showButtons = false }) => {
+const Review = ({
+  review,
+  showButtons = false,
+  onViewRepository,
+  onDeleteReview,
+}) => {
+  const navigate = useNavigate();
+
   const date = new Date(review.createdAt).toLocaleDateString();
+
   return (
     <View>
       <View style={styles.reviewContainer}>
@@ -63,13 +74,15 @@ const Review = ({ review, showButtons = false }) => {
           <Button
             text={'View repository'}
             flex={1}
-            onHandlePress={() => console.log('View Repository was pressed!')}
+            onHandlePress={() =>
+              navigate(`/repositories/${review.repository.id}`)
+            }
           ></Button>
           <Button
             text={'Delete review'}
             warn={true}
             flex={1}
-            onHandlePress={() => console.log('Delete review was pressed!')}
+            onHandlePress={onDeleteReview}
           ></Button>
         </View>
       )}

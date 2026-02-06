@@ -3,7 +3,7 @@ import Text from './Text';
 import { useQuery } from '@apollo/client';
 import { GET_ME } from '../graphql/queries';
 import ItemSeparator from './ItemSeparator';
-import { Review } from './SingleViewRepository';
+import Review from './Review';
 
 const MyReviews = () => {
   const { loading, error, data, refetch } = useQuery(GET_ME, {
@@ -18,7 +18,13 @@ const MyReviews = () => {
       <FlatList
         data={reviews}
         ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <Review review={item} showButtons={true} />}
+        renderItem={({ item }) => (
+          <Review
+            review={item}
+            showButtons={true}
+            onDeleteReview={() => console.log('delete was pressed')}
+          />
+        )}
         keyExtractor={(item) => item.id}
       />
     </View>
