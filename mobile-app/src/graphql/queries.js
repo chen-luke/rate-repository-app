@@ -5,11 +5,15 @@ export const GET_REPOSITORIES = gql`
     $orderBy: AllRepositoriesOrderBy
     $searchKeyword: String
     $orderDirection: OrderDirection
+    $after: String
+    $first: Int
   ) {
     repositories(
       orderBy: $orderBy
       orderDirection: $orderDirection
       searchKeyword: $searchKeyword
+      first: $first
+      after: $after
     ) {
       edges {
         node {
@@ -24,6 +28,13 @@ export const GET_REPOSITORIES = gql`
           ownerAvatarUrl
           createdAt # Added this just in case
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
       }
     }
   }
@@ -41,11 +52,15 @@ export const AUTHENTICATE_USER = gql`
 `;
 
 export const GET_ME = gql`
-  query getCurrentUser($includeReviews: Boolean = false) {
+  query getCurrentUser(
+    $includeReviews: Boolean = false
+    $first: Int
+    $after: String
+  ) {
     me {
       id
       username
-      reviews @include(if: $includeReviews) {
+      reviews(first: $first, after: $after) @include(if: $includeReviews) {
         edges {
           node {
             id
@@ -57,6 +72,13 @@ export const GET_ME = gql`
               id
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          hasPreviousPage
+          startCursor
         }
       }
     }

@@ -33,7 +33,7 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
-    const { repositories, navigate } = this.props;
+    const { repositories, navigate, onEndReach } = this.props;
 
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -45,6 +45,8 @@ export class RepositoryListContainer extends React.Component {
           data={repositoryNodes}
           ItemSeparatorComponent={ItemSeparator}
           ListHeaderComponent={this.renderHeader}
+          onEndReached={onEndReach}
+          onEndReachedThreshold={0.5}
           renderItem={({ item }) => (
             <Pressable
               onPress={() => {
@@ -68,8 +70,6 @@ const RepositoryList = () => {
   const navigate = useNavigate();
   const [debouncedSearchValue] = useDebounce(searchValue, 500);
 
-  console.log('what is search value?', searchValue);
-
   // 2. Define the mapping logic
   const sortOptions = {
     latest: { orderBy: 'CREATED_AT', orderDirection: 'DESC' },
@@ -78,10 +78,15 @@ const RepositoryList = () => {
   };
 
   // 3. Pass variables to the hook
-  const { repositories, loading, error } = useRepositories({
+  const { repositories, loading, error, fetchMore } = useRepositories({
     ...sortOptions[sortingMethod],
     searchKeyword: debouncedSearchValue,
+    first: 3,
   });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   if (error) {
     console.log('Apollo Error:', error);
@@ -100,6 +105,7 @@ const RepositoryList = () => {
       setSearchValue={setSearchValue}
       searchValue={searchValue}
       navigate={navigate}
+      onEndReach={onEndReach}
     />
   );
 };
