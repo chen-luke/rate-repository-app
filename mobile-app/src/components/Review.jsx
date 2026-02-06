@@ -4,6 +4,8 @@ import { StyleSheet, Alert } from 'react-native';
 import theme from '../theme';
 import Button from './Button';
 import { useNavigate } from 'react-router-native';
+import { useMutation } from '@apollo/client';
+import { DELETE_REVIEW } from '../graphql/queries';
 
 const styles = StyleSheet.create({
   reviewContainer: {
@@ -38,17 +40,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const Review = ({
-  review,
-  showButtons = false,
-  onViewRepository,
-  onDeleteReview,
-}) => {
+const Review = ({ review, showButtons = false, onDeleteReview }) => {
   const navigate = useNavigate();
 
   const date = new Date(review.createdAt).toLocaleDateString();
-
-  const onHandleDeleteReview = () => {};
 
   const createTwoButtonAlert = () =>
     Alert.alert(
@@ -60,7 +55,7 @@ const Review = ({
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'DELETE', onPress: onHandleDeleteReview },
+        { text: 'DELETE', onPress: onDeleteReview },
       ],
     );
 

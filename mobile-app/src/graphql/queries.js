@@ -63,6 +63,12 @@ export const GET_ME = gql`
   }
 `;
 
+export const DELETE_REVIEW = gql`
+  mutation DeleteReview($deleteReviewId: ID!) {
+    deleteReview(id: $deleteReviewId)
+  }
+`;
+
 export const GET_REPOSITORY = gql`
   query GetRepo($id: ID!) {
     repository(id: $id) {
