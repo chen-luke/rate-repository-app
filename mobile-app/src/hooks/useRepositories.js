@@ -17,10 +17,10 @@ const useRepositories = (variables) => {
       return;
     }
 
-    console.log(
-      'Fetching more items after cursor:',
-      data.repositories.pageInfo.endCursor,
-    );
+    // console.log(
+    //   'Fetching more items after cursor:',
+    //   data.repositories.pageInfo.endCursor,
+    // );
 
     fetchMore({
       variables: {

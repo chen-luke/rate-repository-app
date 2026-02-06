@@ -52,11 +52,15 @@ export const AUTHENTICATE_USER = gql`
 `;
 
 export const GET_ME = gql`
-  query getCurrentUser($includeReviews: Boolean = false) {
+  query getCurrentUser(
+    $includeReviews: Boolean = false
+    $first: Int
+    $after: String
+  ) {
     me {
       id
       username
-      reviews @include(if: $includeReviews) {
+      reviews(first: $first, after: $after) @include(if: $includeReviews) {
         edges {
           node {
             id
@@ -68,6 +72,13 @@ export const GET_ME = gql`
               id
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          hasPreviousPage
+          startCursor
         }
       }
     }

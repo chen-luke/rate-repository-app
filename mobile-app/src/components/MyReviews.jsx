@@ -8,12 +8,35 @@ import { useMutation } from '@apollo/client';
 import { DELETE_REVIEW } from '../graphql/queries';
 
 const MyReviews = () => {
-  const { loading, error, data, refetch } = useQuery(GET_ME, {
+  const { loading, error, data, fetchMore } = useQuery(GET_ME, {
     fetchPolicy: 'cache-and-network',
-    variables: { includeReviews: true },
+    variables: { includeReviews: true, first: 3 },
   });
 
   const [mutate, result] = useMutation(DELETE_REVIEW);
+
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.me?.reviews?.pageInfo?.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    // console.log(
+    //   'Fetching more items after cursor:',
+    //   data?.me?.reviews?.pageInfo?.endCursor,
+    // );
+
+    fetchMore({
+      variables: {
+        after: data.me.reviews.pageInfo.endCursor,
+      },
+    });
+  };
+
+  const onEndReach = () => {
+    handleFetchMore();
+  };
 
   const onHandleDeleteReview = async (review) => {
     try {
@@ -41,6 +64,8 @@ const MyReviews = () => {
 
   const reviews = data?.me?.reviews?.edges.map((edge) => edge.node) || [];
 
+  if (loading && !data) return <Text>Loading...</Text>;
+
   if (!reviews.length) {
     return (
       <View>
@@ -54,6 +79,8 @@ const MyReviews = () => {
       <FlatList
         data={reviews}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         renderItem={({ item }) => (
           <Review
             review={item}

@@ -46,7 +46,7 @@ export class RepositoryListContainer extends React.Component {
           ItemSeparatorComponent={ItemSeparator}
           ListHeaderComponent={this.renderHeader}
           onEndReached={onEndReach}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.5}
           renderItem={({ item }) => (
             <Pressable
               onPress={() => {
@@ -81,7 +81,7 @@ const RepositoryList = () => {
   const { repositories, loading, error, fetchMore } = useRepositories({
     ...sortOptions[sortingMethod],
     searchKeyword: debouncedSearchValue,
-    first: 2,
+    first: 3,
   });
 
   const onEndReach = () => {
