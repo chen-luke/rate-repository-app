@@ -50,7 +50,7 @@ const MyReviews = () => {
   }
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <FlatList
         data={reviews}
         ItemSeparatorComponent={ItemSeparator}
