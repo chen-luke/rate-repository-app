@@ -1,8 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query Repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $searchKeyword: String
+    $orderDirection: OrderDirection
+  ) {
+    repositories(
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      searchKeyword: $searchKeyword
+    ) {
       edges {
         node {
           fullName
@@ -14,12 +22,12 @@ export const GET_REPOSITORIES = gql`
           forksCount
           description
           ownerAvatarUrl
+          createdAt # Added this just in case
         }
       }
     }
   }
 `;
-
 export const AUTHENTICATE_USER = gql`
   mutation AuthenticateUser($username: String!, $password: String!) {
     authenticate(credentials: { username: $username, password: $password }) {
@@ -33,10 +41,23 @@ export const AUTHENTICATE_USER = gql`
 `;
 
 export const GET_ME = gql`
-  query {
+  query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            rating
+            text
+            createdAt
+            repository {
+              fullName
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -68,6 +89,25 @@ export const GET_REPOSITORY = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const CREATE_REVIEW = gql`
+  mutation createReview($review: CreateReviewInput) {
+    createReview(review: $review) {
+      id
+      repositoryId
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation createUser($user: CreateUserInput) {
+    createUser(user: $user) {
+      createdAt
+      username
+      id
     }
   }
 `;
