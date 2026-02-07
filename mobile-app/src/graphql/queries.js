@@ -92,7 +92,7 @@ export const DELETE_REVIEW = gql`
 `;
 
 export const GET_REPOSITORY = gql`
-  query GetRepo($id: ID!) {
+  query GetRepo($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       id
       fullName
@@ -104,8 +104,9 @@ export const GET_REPOSITORY = gql`
       forksCount
       description
       ownerAvatarUrl
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
+          cursor
           node {
             id
             text
@@ -116,6 +117,11 @@ export const GET_REPOSITORY = gql`
               username
             }
           }
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
         }
       }
     }
